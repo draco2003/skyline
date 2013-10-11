@@ -94,10 +94,12 @@ class Worker(Process):
 
                     pipe.execute()
 
-                # Log progress
-                logger.info('queue size at %d' % self.q.qsize())
+
 
                 if self.canary and settings.GRAPHITE_HOST != '':
+                        # Log progress
+                        logger.info('queue size at %d' % self.q.qsize())
+                        
                         host = settings.GRAPHITE_HOST.replace('http://', '')
                         system("echo skyline.horizon.queue_size %i %i | nc -w 3 %s 2003" % (self.q.qsize(), now, host))
 
