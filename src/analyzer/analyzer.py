@@ -17,6 +17,7 @@ from algorithm_exceptions import *
 
 logger = logging.getLogger("AnalyzerLog")
 
+
 class Analyzer(Thread):
     def __init__(self, parent_pid):
         """
@@ -114,15 +115,13 @@ class Analyzer(Thread):
                 if key not in self.anomaly_breakdown:
                     self.anomaly_breakdown[key] = value
                 else:
-        	        self.anomaly_breakdown[key] += value
+                    self.anomaly_breakdown[key] += value
 
             for key, value in exceptions.items():
                 if key not in self.exceptions:
                     self.exceptions[key] = value
                 else:
-        	        self.exceptions[key] += value
-
-
+                    self.exceptions[key] += value
 
     def run(self):
         """
@@ -179,7 +178,7 @@ class Analyzer(Thread):
                                 logger.error("couldn't send alert: %s" % e)
 
             # Write anomalous_metrics to static webapp directory
-            filename = path.abspath(path.join(path.dirname( __file__ ), '..', settings.ANOMALY_DUMP))
+            filename = path.abspath(path.join(path.dirname(__file__), '..', settings.ANOMALY_DUMP))
             with open(filename, 'w') as fh:
                 # Make it JSONP with a handle_data() function
                 anomalous_metrics = list(self.anomalous_metrics)
@@ -215,7 +214,6 @@ class Analyzer(Thread):
                     system('echo skyline.analyzer.duration %.2f %s | nc -w 3 %s 2003' % (time_human, now, host))
                     system('echo skyline.analyzer.projected %.2f %s | nc -w 3 %s 2003' % (projected, now, host))
 
-
             # Reset counters
             self.anomalous_metrics[:] = []
             self.exceptions = Manager().dict()
@@ -225,4 +223,3 @@ class Analyzer(Thread):
             if time() - now < 5:
                 logger.info('sleeping due to low run time...')
                 sleep(10)
-
