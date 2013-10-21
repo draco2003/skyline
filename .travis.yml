@@ -12,6 +12,6 @@ install:
   - pip install pep8 --use-mirrors
 script:
   - PYTHONPATH= PATH=/home/travis/anaconda/bin:$PATH nosetests -v --nocapture
-  - pep8 --exclude=migrations src
+  - pep8 --exclude=migrations --ignore=E501,E251 src
 notifications:
   email: false
